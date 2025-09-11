@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <div style={{ padding: '2rem' }}>
-        <h1>🍲 Recipe Sharing App</h1>
+        <h1> M-2 Recipe Sharing App</h1>
         <Routes>
           <Route
             path="/"
@@ -33,3 +33,4 @@ const RecipeDetailsWrapper = () => {
 }
 
 export default App
+

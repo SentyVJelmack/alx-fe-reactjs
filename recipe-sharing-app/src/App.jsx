@@ -1,11 +1,12 @@
-import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom'
+import SearchBar from './components/SearchBar'
 import AddRecipeForm from './components/AddRecipeForm'
 import RecipeList from './components/RecipeList'
 import RecipeDetails from './components/RecipeDetails'
+import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom'
 
 function App() {
   return (
-    <Router> {/* 👈 Wrap everything in Router */}
+    <Router>
       <div style={{ padding: '2rem' }}>
         <h1>🍲 Recipe Sharing App</h1>
         <Routes>
@@ -13,6 +14,7 @@ function App() {
             path="/"
             element={
               <>
+                <SearchBar />          {/* Add search bar */}
                 <AddRecipeForm />
                 <RecipeList />
               </>
@@ -25,7 +27,6 @@ function App() {
   )
 }
 
-// Wrapper to extract id from route params
 const RecipeDetailsWrapper = () => {
   const { id } = useParams()
   return <RecipeDetails recipeId={Number(id)} />

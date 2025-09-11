@@ -3,7 +3,7 @@ import AddRecipeForm from './components/AddRecipeForm'
 import RecipeList from './components/RecipeList'
 import RecipeDetails from './components/RecipeDetails'
 import FavoritesList from './components/FavoritesList'
-import RecommendationList from './components/RecommendationList'
+import RecommendationsList from './components/RecommendationsList'
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom'
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
                 <AddRecipeForm />
                 <RecipeList />
                 <FavoritesList />
-                <RecommendationList />
+                <RecommendationsList />
               </>
             }
           />

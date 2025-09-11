@@ -2,21 +2,25 @@ import SearchBar from './components/SearchBar'
 import AddRecipeForm from './components/AddRecipeForm'
 import RecipeList from './components/RecipeList'
 import RecipeDetails from './components/RecipeDetails'
+import FavouritesList from './components/FavouritesList'        // NEW
+import RecommendationList from './components/RecommendationList' // NEW
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom'
 
 function App() {
   return (
     <Router>
       <div style={{ padding: '2rem' }}>
-        <h1> M-2 Recipe Sharing App</h1>
+        <h1>M-2 Recipe Sharing App</h1>
         <Routes>
           <Route
             path="/"
             element={
               <>
-                <SearchBar />          {/* Add search bar */}
+                <SearchBar />          
                 <AddRecipeForm />
                 <RecipeList />
+                <FavouritesList />          {/* NEW */}
+                <RecommendationList />      {/* NEW */}
               </>
             }
           />
@@ -33,4 +37,3 @@ const RecipeDetailsWrapper = () => {
 }
 
 export default App
-

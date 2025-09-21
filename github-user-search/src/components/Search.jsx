@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetchAdvancedUserData } from "../services/githubService";
+import { fetchUserData, fetchAdvancedUserData } from "../services/githubService";
 
 function Search() {
   const [username, setUsername] = useState("");
@@ -16,11 +16,17 @@ function Search() {
     setUsers([]);
 
     try {
-      const results = await fetchAdvancedUserData({
-        username,
-        location,
-        minRepos,
-      });
+      let results = [];
+
+      // ✅ If only username is provided, use fetchUserData
+      if (username && !location && !minRepos) {
+        const user = await fetchUserData(username);
+        results = user ? [user] : [];
+      } else {
+        // ✅ Otherwise use advanced search
+        results = await fetchAdvancedUserData({ username, location, minRepos });
+      }
+
       setUsers(results);
     } catch (err) {
       setError("Looks like we can’t find the user");
@@ -65,13 +71,13 @@ function Search() {
         </button>
       </form>
 
-      {/* Display error */}
+      {/* Error */}
       {error && <p className="text-red-500 mt-4">{error}</p>}
 
-      {/* Loading state */}
+      {/* Loading */}
       {loading && <p className="text-gray-500 mt-4">Loading...</p>}
 
-      {/* Display users */}
+      {/* Display Users */}
       <div className="mt-6 space-y-4">
         {users.map((user) => (
           <div
@@ -85,6 +91,10 @@ function Search() {
             />
             <div>
               <p className="font-semibold">{user.login}</p>
+              {user.location && <p className="text-sm">{user.location}</p>}
+              {user.public_repos !== undefined && (
+                <p className="text-sm">Repos: {user.public_repos}</p>
+              )}
               <a
                 href={user.html_url}
                 target="_blank"

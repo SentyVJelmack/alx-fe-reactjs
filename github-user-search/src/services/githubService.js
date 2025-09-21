@@ -1,9 +1,9 @@
-import axios from "axios"; // add this
-import api from "./githubAPI";
+import axios from "axios";
 
 export const fetchUserData = async (username) => {
   if (!username) throw new Error("Username is required");
-  
-  const response = await api.get(`/users/${username}`);
+
+  // Use the full GitHub API URL directly
+  const response = await axios.get(`https://api.github.com/users/${username}`);
   return response.data;
 };

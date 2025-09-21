@@ -1,86 +1,104 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { fetchAdvancedUserData } from "../services/githubService";
 
-const Search = () => {
+function Search() {
   const [username, setUsername] = useState("");
-  const [userData, setUserData] = useState(null);
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
-  const handleSearch = async () => {
-    if (!username) return;
-
+  const handleSearch = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    setError("");
-    setUserData(null);
+    setError(null);
+    setUsers([]);
 
     try {
-      const response = await fetch(`https://api.github.com/users/${username}`);
-      if (!response.ok) {
-        throw new Error("User not found");
-      }
-      const data = await response.json();
-      setUserData(data);
+      const results = await fetchAdvancedUserData({
+        username,
+        location,
+        minRepos,
+      });
+      setUsers(results);
     } catch (err) {
-      setError(err.message);
+      setError("Looks like we can’t find the user");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
-
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 bg-gray-800 text-white rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4 text-center">GitHub User Search</h1>
+    <div className="max-w-xl mx-auto mt-10 p-4">
+      <h1 className="text-3xl font-bold text-center mb-6">
+        GitHub User Search
+      </h1>
 
-      <div className="flex gap-2 mb-4">
+      <form onSubmit={handleSearch} className="space-y-4">
         <input
+          className="w-full p-2 border rounded"
           type="text"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Enter GitHub username"
-          className="flex-1 p-2 rounded border border-gray-600 bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input
+          className="w-full p-2 border rounded"
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+        />
+        <input
+          className="w-full p-2 border rounded"
+          type="number"
+          placeholder="Minimum repositories"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
         />
         <button
-          onClick={handleSearch}
-          className="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 transition"
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          type="submit"
         >
           Search
         </button>
+      </form>
+
+      {/* Display error */}
+      {error && <p className="text-red-500 mt-4">{error}</p>}
+
+      {/* Loading state */}
+      {loading && <p className="text-gray-500 mt-4">Loading...</p>}
+
+      {/* Display users */}
+      <div className="mt-6 space-y-4">
+        {users.map((user) => (
+          <div
+            key={user.id}
+            className="p-4 border rounded flex items-center space-x-4"
+          >
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              className="w-12 h-12 rounded-full"
+            />
+            <div>
+              <p className="font-semibold">{user.login}</p>
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                View Profile
+              </a>
+            </div>
+          </div>
+        ))}
       </div>
-
-      {loading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-red-500 text-center">{error}</p>}
-
-      {userData && (
-        <div className="mt-4 p-4 bg-gray-700 rounded">
-          <img
-            src={userData.avatar_url}
-            alt={userData.login}
-            className="w-20 h-20 rounded-full mx-auto"
-          />
-          <h2 className="text-xl font-semibold text-center mt-2">{userData.login}</h2>
-          {userData.name && <p className="text-center">{userData.name}</p>}
-          {userData.bio && <p className="text-center mt-1">{userData.bio}</p>}
-          <p className="text-center mt-1">
-            <a
-              href={userData.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:underline"
-            >
-              View Profile
-            </a>
-          </p>
-        </div>
-      )}
     </div>
   );
-};
+}
 
 export default Search;

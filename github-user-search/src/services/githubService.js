@@ -1,9 +1,21 @@
 import axios from "axios";
 
-export const fetchUserData = async (username) => {
-  if (!username) throw new Error("Username is required");
+// Advanced user search
+export const fetchAdvancedUserData = async ({ username, location, minRepos }) => {
+  let query = username || "";
+  if (location) query += `+location:${location}`;
+  if (minRepos) query += `+repos:>=${minRepos}`;
 
-  // Use the full GitHub API URL directly
-  const response = await axios.get(`https://api.github.com/users/${username}`);
-  return response.data;
+  const response = await axios.get(`https://api.github.com/search/users?q=${query}`);
+  const users = response.data.items;
+
+  // Fetch additional info for each user
+  const detailedUsers = await Promise.all(
+    users.map(async (user) => {
+      const userDetails = await axios.get(user.url);
+      return userDetails.data;
+    })
+  );
+
+  return detailedUsers;
 };

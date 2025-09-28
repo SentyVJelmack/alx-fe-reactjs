@@ -1,37 +1,14 @@
-import create from 'zustand'
+import { create } from "zustand";
 
-export const useRecipeStore = create((set) => ({
+// Define the recipe store
+const useRecipeStore = create((set) => ({
   recipes: [],
-  favorites: [],
-  recommendations: [],
-  
-  // Add a new recipe
-  addRecipe: (newRecipe) => set(state => ({ recipes: [...state.recipes, newRecipe] })),
 
-  // Delete a recipe
-  deleteRecipe: (id) => set(state => ({
-    recipes: state.recipes.filter(recipe => recipe.id !== id),
-    favorites: state.favorites.filter(favId => favId !== id)
-  })),
+  // Function to set/update recipes
+  setRecipes: (newRecipes) => set({ recipes: newRecipes }),
 
-  // Update a recipe
-  updateRecipe: (updatedRecipe) => set(state => ({
-    recipes: state.recipes.map(r => r.id === updatedRecipe.id ? updatedRecipe : r)
-  })),
+  // Optional: function to add a single recipe
+  addRecipe: (recipe) => set((state) => ({ recipes: [...state.recipes, recipe] })),
+}));
 
-  // Add/remove favorite
-  addFavorite: (id) => set(state => ({
-    favorites: [...state.favorites, id]
-  })),
-  removeFavorite: (id) => set(state => ({
-    favorites: state.favorites.filter(favId => favId !== id)
-  })),
-
-  // Generate recommendations based on favorites
-  generateRecommendations: () => set(state => {
-    const recommended = state.recipes.filter(
-      recipe => state.favorites.includes(recipe.id) && Math.random() > 0.5
-    )
-    return { recommendations: recommended }
-  })
-}))
+export default useRecipeStore;

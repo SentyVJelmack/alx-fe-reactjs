@@ -5,14 +5,14 @@ function AddRecipeForm() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
+  const [steps, setSteps] = useState(""); // renamed from instructions
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Basic validation
-    if (!title || !ingredients || !instructions) {
+    if (!title || !ingredients || !steps) {
       setError("Please fill in all fields");
       return;
     }
@@ -23,24 +23,23 @@ function AddRecipeForm() {
       return;
     }
 
-    // Build new recipe object
     const newRecipe = {
       id: Date.now(),
       title,
       description: "User submitted recipe",
       image: "https://via.placeholder.com/400x300?text=Recipe+Image",
       ingredients: ingredientList,
-      instructions: instructions.split("\n").map((i) => i.trim()),
+      steps: steps.split("\n").map((s) => s.trim()), // renamed from instructions
     };
 
-    // Save to localStorage for demo (or could post to backend)
+    // Save to localStorage for demo
     const existingRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
     localStorage.setItem("recipes", JSON.stringify([...existingRecipes, newRecipe]));
 
     // Reset form and redirect
     setTitle("");
     setIngredients("");
-    setInstructions("");
+    setSteps("");
     setError("");
     navigate("/"); // back to home
   };
@@ -61,7 +60,9 @@ function AddRecipeForm() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-semibold mb-2">Ingredients (comma separated)</label>
+          <label className="block text-gray-700 font-semibold mb-2">
+            Ingredients (comma separated)
+          </label>
           <textarea
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
@@ -71,10 +72,12 @@ function AddRecipeForm() {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-semibold mb-2">Preparation Steps (one per line)</label>
+          <label className="block text-gray-700 font-semibold mb-2">
+            Preparation Steps (one per line)
+          </label>
           <textarea
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
+            value={steps} // renamed
+            onChange={(e) => setSteps(e.target.value)} // renamed
             rows="5"
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           ></textarea>

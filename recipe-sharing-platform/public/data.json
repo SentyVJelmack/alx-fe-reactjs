@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Spaghetti Bolognese",
+    "description": "A classic Italian pasta dish with a rich meat sauce.",
+    "image": "https://images.unsplash.com/photo-1603133872878-684f208fb84b",
+    "ingredients": [
+      "200g spaghetti",
+      "100g minced beef",
+      "1 onion, chopped",
+      "2 garlic cloves, minced",
+      "400g canned tomatoes",
+      "Salt and pepper to taste"
+    ],
+    "instructions": [
+      "Cook spaghetti according to package instructions.",
+      "In a pan, sauté onions and garlic until soft.",
+      "Add minced beef and cook until browned.",
+      "Stir in tomatoes, salt, and pepper, then simmer for 15 minutes.",
+      "Serve sauce over spaghetti."
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Chicken Curry",
+    "description": "A flavorful and spicy chicken curry with coconut milk.",
+    "image": "https://images.unsplash.com/photo-1598514982849-68a95c6de0d3",
+    "ingredients": [
+      "500g chicken pieces",
+      "1 onion, chopped",
+      "2 garlic cloves, minced",
+      "1 tbsp curry powder",
+      "400ml coconut milk",
+      "Salt to taste"
+    ],
+    "instructions": [
+      "Fry onions and garlic until golden.",
+      "Add chicken and brown it lightly.",
+      "Add curry powder and stir well.",
+      "Pour in coconut milk, cover, and simmer for 20 minutes.",
+      "Serve with rice or naan bread."
+    ]
+  }
+]
